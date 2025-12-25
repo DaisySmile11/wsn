@@ -112,7 +112,7 @@ export default function AdminPage() {
             <label className="text-sm font-semibold text-slate-600">ThingSpeak Channel ID</label>
             <input value={form.channelId} onChange={(e) => onChange("channelId", e.target.value)}
               className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-400"
-              placeholder="2690349" />
+              placeholder="2982312" />
           </div>
 
           <div>
