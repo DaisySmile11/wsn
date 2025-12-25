@@ -2,7 +2,15 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import path from "path";
+
 import readingsRouter from "./routes/readings";
+
+// ✅ add these imports
+import alertsRouter from "./routes/alerts";
+import thresholdsRouter from "./routes/thresholds";
+
+// ✅ (optional) start cron alert engine if your patch includes it
+import { startAlertEngine } from "./services/alertEngine";
 
 dotenv.config();
 
@@ -17,6 +25,13 @@ app.get("/health", (req, res) => {
 
 // API routes
 app.use("/api/readings", readingsRouter);
+
+// ✅ add these routes
+app.use("/api/alerts", alertsRouter);
+app.use("/api/thresholds", thresholdsRouter);
+
+// ✅ start background alert checking (cron)
+startAlertEngine();
 
 // Serve React build (single URL deployment)
 const FRONTEND_DIST = path.join(__dirname, "../../frontend/water-monitoring-frontend/dist");

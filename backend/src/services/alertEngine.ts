@@ -1,3 +1,4 @@
+import cron from "node-cron";
 import { query } from "../db";
 import { sendAlertEmail } from "./mailer";
 
@@ -200,4 +201,25 @@ export async function runAlertEngineOnce() {
       }
     }
   }
+}
+
+let started = false;
+
+export function startAlertEngine() {
+  if (started) return;
+  started = true;
+
+  // Run once at startup
+  runAlertEngineOnce().catch((err) => console.error("runAlertEngineOnce error:", err));
+
+  // Then run every minute
+  cron.schedule("* * * * *", async () => {
+    try {
+      await runAlertEngineOnce();
+    } catch (err) {
+      console.error("Alert engine cron error:", err);
+    }
+  });
+
+  console.log("✅ Alert engine started (runs every 1 minute)");
 }
